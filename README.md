@@ -8,7 +8,7 @@ This uses [Cloudflare Workers Static Assets](https://developers.cloudflare.com/w
 
 1. In Cloudflare **Workers & Pages**, create a Worker and import this GitHub repository.
 2. Choose the `main` branch and repository root `/`.
-3. Set **Build command** to `npm run build`.
+3. Set **Build command** to `npm run build`, or leave it blank. The committed `public/` directory is ready to deploy; building only prepares optional domain metadata.
 4. Set **Deploy command** to `npx wrangler deploy`.
 5. Keep the Worker name `advantech-engineering` (or change it in `wrangler.jsonc` to match).
 6. Deploy. Cloudflare assigns the actual `workers.dev` URL; add a custom domain in the Worker's settings if desired.
@@ -42,7 +42,7 @@ Cloudflare redirects `.html` links to their clean equivalents, preserving query 
 - `public/gallery-data.js`: all original project titles, descriptions and categories.
 - `public/assets/`: website photography, logo, original gallery images and thumbnails.
 - `public/style.css`, `refinement.css`, `final-polish.css`: responsive styles.
-- `scripts/build.mjs`: copies the source to `dist/` and generates optional domain metadata.
+- `scripts/build.mjs`: prepares optional domain metadata directly in `public/`.
 - `wrangler.jsonc`: deployment configuration.
 
 The enquiry form opens a draft WhatsApp message to +60 17-953 2690; the visitor sends it in WhatsApp. There is no server-side form storage or email delivery. The contact page embeds the supplied Puchong store address in Google Maps. Generated editorial photography is used on marketing pages; the project gallery retains original site photographs.
