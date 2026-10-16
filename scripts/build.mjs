@@ -1,9 +1,15 @@
-import { cp, mkdir, readFile, writeFile, readdir, rm } from 'node:fs/promises';
+import { readFile, writeFile, readdir, rm } from 'node:fs/promises';
 
-const output = new URL('../dist/', import.meta.url);
-await rm(output, { recursive: true, force: true });
-await mkdir(output, { recursive: true });
-await cp(new URL('../public/', import.meta.url), output, { recursive: true });
+const output = new URL('../public/', import.meta.url);
+// The checked-in website is deployable without running this optional metadata step.
+await rm(new URL('sitemap.xml', output), { force: true });
+await writeFile(new URL('robots.txt', output), 'User-agent: *\nAllow: /\n');
+for (const name of await readdir(output)) {
+  if (!name.endsWith('.html')) continue;
+  const file = new URL(name, output);
+  const html = await readFile(file, 'utf8');
+  await writeFile(file, html.replace(/content="https?:\/\/[^"\s]+\/assets\/building-cabling-01\.webp"/g, 'content="/assets/building-cabling-01.webp"'));
+}
 
 // Set SITE_URL in Cloudflare Builds once a workers.dev or custom domain is known.
 // Without it, no sitemap or absolute social URL is invented.
@@ -24,4 +30,4 @@ if (configuredUrl) {
     await writeFile(file, html.replace('content="/assets/building-cabling-01.webp"', `content="${origin}/assets/building-cabling-01.webp"`));
   }
 }
-console.log('Built website in dist/');
+console.log('Website ready in public/');
