@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const root = new URL('../dist/', import.meta.url);
+const root = new URL('../public/', import.meta.url);
 const context = { window: {} };
 for (const file of ['data.js', 'gallery-data.js']) {
   vm.runInNewContext(await readFile(new URL(file, root), 'utf8'), context);
